@@ -1,5 +1,5 @@
 // Example of a typescript file
-// Idea inspired by https://leetCode.com/problems/two-sum/
+// Idea inspired by https://leetcode.com/problems/two-sum/
 
 /**
  * Finds indices of two numbers in an array that add up to a target sum.
