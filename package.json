@@ -13,14 +13,6 @@
     "pre-commit": "lint-staged",
     "prepare": "husky install"
   },
-  "lint-staged": {
-    "src/**/*.ts": [
-      "npm run format",
-      "npm run lint",
-      "npm run type-check",
-      "npm run test"
-    ]
-  },
   "husky": {
     "hooks": {
       "pre-commit": "npm run pre-commit",

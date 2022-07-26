@@ -182,5 +182,10 @@
     ],
     "no-underscore-dangle": "off"
   },
-  "ignorePatterns": ["node_modules/", "dist/", "webpack.config.js"]
+  "ignorePatterns": [
+    "node_modules/",
+    "dist/",
+    "webpack.config.js",
+    "lint-staged.config.js"
+  ]
 }
