@@ -1,5 +1,5 @@
 module.exports = {
-  '.ts': () => [
+  '.{ts}': () => [
     'npm run format',
     'npm run lint',
     'npm run type-check',
