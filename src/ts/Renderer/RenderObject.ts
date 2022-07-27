@@ -4,8 +4,8 @@ import type { SpriteAnimation } from '@/Sprite'
 
 import { v4 as uuid } from 'uuid'
 
-import Dimensions from '@/Dimension/Dimension'
-import Vector2D from '@/Dimension/Vector'
+import Dimensions from '@/Dimensions/Dimensions'
+import Vector2D from '@/Dimensions/Vector'
 
 interface Background {
   color?: string
@@ -13,13 +13,13 @@ interface Background {
 }
 
 class RenderObject extends Dimensions {
-  //* ==================== PUBLIC STATIC PROPERTIES ==================== //
+  //  ==================== PUBLIC STATIC PROPERTIES ==================== //
   public static CONFIG = {
     /** Default background color */
     DEFAULT_BACKGROUND_COLOR: 'red',
   }
 
-  //* ==================== PUBLIC PROPERTIES ==================== //
+  //  ==================== PUBLIC PROPERTIES ==================== //
 
   /** Animations */
   public readonly animations: SpriteAnimation[] = []
@@ -41,13 +41,16 @@ class RenderObject extends Dimensions {
   /** Indicates whether width, height and position are relativ calculated */
   public isRelative: boolean = false
 
+  /** Keeps aspect ratio when scaling */
+  public keepAspectRatio: boolean = true
+
   /** Position  on canvas */
   public position: Vector2D = new Vector2D(0, 0)
 
   /** Render priority */
   public renderPriority: number = 0
 
-  //* ==================== CONSTRUCTOR ==================== //
+  //  ==================== CONSTRUCTOR ==================== //
 
   /** Represents game object on game screen */
   constructor(
@@ -64,7 +67,7 @@ class RenderObject extends Dimensions {
     if (identifier) this.identifier = identifier
   }
 
-  //* ==================== PUBLIC METHODS ==================== //
+  //  ==================== PUBLIC METHODS ==================== //
 
   /** Adds animation to object
    * @param animation Animation to add

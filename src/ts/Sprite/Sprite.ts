@@ -4,14 +4,14 @@ import type { RenderData } from '@/Renderer/interfaces'
 
 import { v4 as uuid } from 'uuid'
 
-import Vector2D from '@/Dimension/Vector'
+import Vector2D from '@/Dimensions/Vector'
 
 class Sprite {
-  //* ==================== PUBLIC STATIC PROPERTIES ==================== //
+  //  ==================== PUBLIC STATIC PROPERTIES ==================== //
 
   public static CONFIG = {}
 
-  //* ==================== PUBLIC PROPERTIES ==================== //
+  //  ==================== PUBLIC PROPERTIES ==================== //
 
   /** ID of the sprite */
   public readonly id = uuid()
@@ -19,17 +19,17 @@ class Sprite {
   /** All sprites states */
   public readonly states: State[]
 
-  //* ==================== PRIVATE PROPERTIES ==================== //
+  //  ==================== PRIVATE PROPERTIES ==================== //
 
   private _currentState: State | undefined = undefined
 
-  //* ==================== CONSTRUCTORS ==================== //
+  //  ==================== CONSTRUCTORS ==================== //
 
   constructor(states: State[] = []) {
     this.states = states
   }
 
-  //* ==================== PUBLIC STATIC METHODS ==================== //
+  //  ==================== PUBLIC STATIC METHODS ==================== //
 
   /**
    * Forms sprite out of assets
@@ -80,20 +80,24 @@ class Sprite {
 
     const image = state.image.asset as HTMLImageElement
 
-    ctx.drawImage(
-      image,
-      sx,
-      sy,
-      state.width,
-      state.height,
-      dx,
-      dy,
-      width,
-      height
-    )
+    if (image !== undefined) {
+      ctx.imageSmoothingEnabled = false
+      ctx.imageSmoothingQuality = 'high'
+      ctx.drawImage(
+        image,
+        sx,
+        sy,
+        state.width,
+        state.height,
+        dx,
+        dy,
+        width,
+        height
+      )
+    }
   }
 
-  //* ==================== PUBLIC METHODS ==================== //
+  //  ==================== PUBLIC METHODS ==================== //
 
   /** Returns currently selected state */
   public getCurrentState(): State | undefined {

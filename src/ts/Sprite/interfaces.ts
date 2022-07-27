@@ -1,5 +1,5 @@
 import type Asset from '@/Asset'
-import type Vector2D from '@/Dimension/Vector'
+import type Vector2D from '@/Dimensions/Vector'
 
 export interface State {
   height: number

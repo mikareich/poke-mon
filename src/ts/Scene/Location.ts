@@ -1,9 +1,9 @@
-import type Vector2D from '@/Dimension/Vector'
+import type Vector2D from '@/Dimensions/Vector'
 import type { Renderable } from '@/Renderer/interfaces'
 
 import { v4 as uuid } from 'uuid'
 
-import Dimensions from '@/Dimension/Dimension'
+import Dimensions from '@/Dimensions/Dimensions'
 import RenderCollection from '@/Renderer/RenderCollection'
 
 /** Represents location in game */
@@ -15,18 +15,23 @@ class Location extends Dimensions {
   public readonly id: string = uuid()
 
   /** Background of location */
-  private readonly background: RenderCollection
+  private readonly _background: RenderCollection
 
   constructor(width: number, height: number, position: Vector2D) {
     super(width, height, position)
 
-    this.background = new RenderCollection(width, height, position)
-    this.background.isRelative = true
+    this._background = new RenderCollection(width, height, position)
+    this._background.isRelative = true
+  }
+
+  /** Background of location */
+  public get background(): Renderable[] {
+    return [...this._background.collection]
   }
 
   /** Set's background of location */
-  public setBackground(...renderable: Renderable[]): void {
-    this.background.add(...renderable)
+  public async setBackground(...renderable: Renderable[]): Promise<void> {
+    await this._background.add(...renderable)
   }
 }
 

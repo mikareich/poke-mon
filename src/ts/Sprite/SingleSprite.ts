@@ -1,10 +1,10 @@
 import Sprite from './Sprite'
 
 import Asset from '@/Asset'
-import Vector2D from '@/Dimension/Vector'
+import { Vector2D } from '@/Dimensions'
 
 class SingleSprite extends Sprite {
-  //* ==================== CONSTRUCTOR ==================== //
+  //  ==================== CONSTRUCTOR ==================== //
   constructor(src: string, width: number, height: number) {
     const asset = new Asset('image', src, {
       height: height.toString(),

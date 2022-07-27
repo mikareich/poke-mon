@@ -5,7 +5,7 @@ import { FPS } from '../constants'
 import Sprite from './Sprite'
 
 class SpriteAnimation extends Sprite {
-  //* ==================== PUBLIC PROPERTIES ==================== //
+  //  ==================== PUBLIC PROPERTIES ==================== //
 
   /** Whether the animations repeats */
   public infinite: boolean = false
@@ -16,7 +16,7 @@ class SpriteAnimation extends Sprite {
   /** How many times the state changes in one second */
   public ticks: number = FPS
 
-  //* ==================== PRIVATE PROPERTIES ==================== //
+  //  ==================== PRIVATE PROPERTIES ==================== //
 
   /** Last time the state was changed */
   private lastUpdate: number = 0
@@ -24,7 +24,7 @@ class SpriteAnimation extends Sprite {
   /** Index of the current state */
   private stateIndex = 0
 
-  //* ==================== CONSTRUCTOR ==================== //
+  //  ==================== CONSTRUCTOR ==================== //
 
   /** Creates new animation */
   constructor(name: string, states: State[]) {
@@ -35,7 +35,7 @@ class SpriteAnimation extends Sprite {
     this.setCurrentState(states[0].name)
   }
 
-  //* ==================== PUBLIC METHODS ==================== //
+  //  ==================== PUBLIC METHODS ==================== //
 
   /** Triggers next sprite state */
   public update(): void {

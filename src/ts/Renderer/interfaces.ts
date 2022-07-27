@@ -1,6 +1,6 @@
 import type RenderCollection from './RenderCollection'
 import type RenderObject from './RenderObject'
-import type Vector2D from '@/Dimension/Vector'
+import type Vector2D from '@/Dimensions/Vector'
 import type Sprite from '@/Sprite/Sprite'
 import type SpriteAnimation from '@/Sprite/SpriteAnimation'
 

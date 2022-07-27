@@ -8,8 +8,8 @@ import {
 
 import RenderCollection from './RenderCollection'
 
-import Dimensions from '@/Dimension/Dimension'
-import Vector2D from '@/Dimension/Vector'
+import Dimensions from '@/Dimensions/Dimensions'
+import Vector2D from '@/Dimensions/Vector'
 import Sprite, { SpriteAnimation } from '@/Sprite'
 
 /** The core function of the Render class is the rendering of render objects. It
@@ -17,7 +17,7 @@ stores all render objects in a render collection. When a renderer is initiated,
 the game canvas is also scaled to preset dimensions and the canvas context is
 created. */
 class Renderer {
-  //* ==================== PUBLIC STATIC PROPERTIES ==================== //
+  // ==================== PUBLIC STATIC PROPERTIES ==================== //
 
   /** Presets */
   public static CONFIG = {
@@ -29,7 +29,7 @@ class Renderer {
     ORIENTED_WIDTH,
   }
 
-  //* ==================== PUBLIC PROPERTIES  ==================== //
+  //  ==================== PUBLIC PROPERTIES  ==================== //
 
   /** Game Canvas */
   public readonly canvasElement: HTMLCanvasElement
@@ -44,14 +44,14 @@ class Renderer {
     new Vector2D(0, 0)
   )
 
-  //* ==================== CONSTRUCTORS ==================== //
+  //  ==================== CONSTRUCTORS ==================== //
 
   /** Initiates new renderer */
   constructor(canvasElement: HTMLCanvasElement) {
     this.canvasElement = canvasElement
     this.context = canvasElement.getContext('2d')!
 
-    this.context.imageSmoothingEnabled = true
+    this.context.imageSmoothingEnabled = false
     this.context.imageSmoothingQuality = 'high'
 
     this.renderCollection.isRelative = true
@@ -64,11 +64,27 @@ class Renderer {
     })
   }
 
-  //* ==================== PUBLIC GETTERS ==================== //
+  //  ==================== PUBLIC GETTERS ==================== //
 
   /** Absolute height of canvas */
   public get height(): number {
     return this.canvasElement.height
+  }
+
+  /** Render data of collection */
+  public get renderData(): RenderData[] {
+    const absoluteDimensions = new Dimensions(
+      this.width,
+      this.height,
+      new Vector2D(0, 0)
+    )
+    // render all render data
+    const renderData = this.renderCollection.toRenderData(
+      this.renderCollection,
+      absoluteDimensions
+    )
+
+    return renderData
   }
 
   /** Absolute width of canvas */
@@ -76,7 +92,7 @@ class Renderer {
     return this.canvasElement.width
   }
 
-  //* ==================== PUBLIC STATIC METHODS ==================== //
+  //  ==================== PUBLIC STATIC METHODS ==================== //
 
   /** Renders render object on canvas
    * @param renderData Render data
@@ -101,7 +117,7 @@ class Renderer {
     }
   }
 
-  //* ==================== PRIVATE STATIC METHODS ==================== //
+  //  ==================== PRIVATE STATIC METHODS ==================== //
 
   /** Sets width and height of canvas based on given ratio
    * @param canvasElement Canvas element
@@ -121,23 +137,12 @@ class Renderer {
     canvasElement.setAttribute('height', `${height}`)
   }
 
-  //* ==================== PUBLIC METHODS ==================== //
+  //  ==================== PUBLIC METHODS ==================== //
 
   /** Renders all render objects and collections */
-  public async render(): Promise<void> {
+  public render(): void {
     this.context.clearRect(0, 0, this.width, this.height)
-
-    const absoluteDimensions = new Dimensions(
-      this.width,
-      this.height,
-      new Vector2D(0, 0)
-    )
-    // render all render data
-    const renderData = this.renderCollection.toRenderData(
-      this.renderCollection,
-      absoluteDimensions
-    )
-    renderData.forEach((data) => Renderer.render(data, this.context))
+    this.renderData.forEach((data) => Renderer.render(data, this.context))
   }
 }
 

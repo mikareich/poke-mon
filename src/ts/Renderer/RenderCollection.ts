@@ -1,13 +1,13 @@
 import type { Renderable, RenderData } from './interfaces'
-import type Vector2D from '@/Dimension/Vector'
+import type { Vector2D } from '@/Dimensions'
 
 import { v4 as uuid } from 'uuid'
 
-import Dimensions from '@/Dimension/Dimension'
+import Dimensions from '@/Dimensions'
 
 /** Contains related render objects or render collections */
 class RenderCollection extends Dimensions {
-  //* ==================== PUBLIC PROPERTIES ==================== //
+  // ==================== PUBLIC PROPERTIES ==================== //
 
   /** ID of the collection */
   public readonly id = uuid()
@@ -18,7 +18,7 @@ class RenderCollection extends Dimensions {
   /** Collection */
   private _collection: Renderable[] = []
 
-  //* ==================== CONSTRUCTOR ==================== //
+  // ==================== CONSTRUCTOR ==================== //
 
   /** Creates new collection
    * @param width Width of collection
@@ -35,15 +35,15 @@ class RenderCollection extends Dimensions {
     return [...this._collection]
   }
 
-  //* ==================== PUBLIC METHODS ==================== //
+  //  ==================== PUBLIC METHODS ==================== //
 
   /** Adds render items to collection
    * @param items Items to add
    */
   public async add(...items: Renderable[]): Promise<void> {
-    await Promise.all(items.map((item) => item.loadAssets()))
-
     this._collection.push(...items)
+
+    await Promise.all(items.map((item) => item.loadAssets()))
   }
 
   /** Loads all assets of containing items */

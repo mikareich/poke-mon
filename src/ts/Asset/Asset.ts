@@ -11,7 +11,12 @@ type AssetType = 'image' | 'audio' | 'video'
 type LoadedAsset = HTMLImageElement | HTMLAudioElement | HTMLVideoElement
 
 class Asset {
-  //* ==================== PUBLIC PROPERTIES ==================== //
+  // ==================== PRIVATE STATIC PROPERTIES ==================== //
+
+  // eslint-disable-next-line no-use-before-define
+  private static createdAssets: Asset[] = []
+
+  //  ==================== PUBLIC PROPERTIES ==================== //
 
   /** Loaded asset */
   public asset: LoadedAsset | undefined
@@ -32,6 +37,26 @@ class Asset {
     this.type = type
     this.src = src
     this.options = options || {}
+
+    const loadedAsset = Asset.getAsset(type, src, options)
+    if (loadedAsset) {
+      this.loaded = true
+      this.asset = loadedAsset.asset
+    }
+  }
+
+  // ==================== PRIVATE STATIC METHODS ==================== //
+
+  /** Returns asset if it's already created */
+  private static getAsset(
+    type: AssetType,
+    src: string,
+    options?: Options
+  ): Asset | undefined {
+    return this.createdAssets.find(
+      (asset) =>
+        asset.type === type && asset.src === src && asset.options === options
+    )
   }
 
   /** Loads asset and returns html element */

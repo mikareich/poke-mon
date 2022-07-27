@@ -1,6 +1,7 @@
-import Renderer from '../Renderer/Renderer'
-
 import Vector2D from './Vector'
+
+import Renderer from '@/Renderer'
+import { round, roundUp } from '@/Utils/round'
 
 type RelativePositionX = 'left' | 'center' | 'right'
 type RelativePositionY = 'top' | 'center' | 'bottom'
@@ -9,11 +10,11 @@ type RelativePositionY = 'top' | 'center' | 'bottom'
  * Represents width, height and a position
  */
 class Dimensions {
-  //* ==================== PUBLIC STATIC PROPERTIES ==================== //
+  //  ==================== PUBLIC STATIC PROPERTIES ==================== //
 
   public static CONFIG = {}
 
-  //* ==================== PUBLIC PROPERTIES ==================== //
+  //  ==================== PUBLIC PROPERTIES ==================== //
 
   /** Relative height on the canvas */
   public height: number = Renderer.CONFIG.ORIENTED_HEIGHT
@@ -24,7 +25,7 @@ class Dimensions {
   /** Relative width on the canvas */
   public width: number = Renderer.CONFIG.ORIENTED_WIDTH
 
-  //* ==================== CONSTRUCTORS ==================== //
+  //  ==================== CONSTRUCTORS ==================== //
 
   /** Creates width, height and a position */
   constructor(width: number, height: number, position: Vector2D) {
@@ -33,7 +34,7 @@ class Dimensions {
     this.position = position
   }
 
-  //* ==================== PUBLIC STATIC METHODS ==================== //
+  //  ==================== PUBLIC STATIC METHODS ==================== //
 
   /** Calculates absolut dimensions
    * @param ratio Relative dimensions in another collection
@@ -51,11 +52,11 @@ class Dimensions {
     } = targetDimension
 
     return new Dimensions(
-      Math.round(width * baseWidth),
-      Math.round(height * baseHeight),
+      roundUp(width * baseWidth),
+      roundUp(height * baseHeight),
       new Vector2D(
-        Math.round(position.x * baseWidth + basePosition.x),
-        Math.round(position.y * baseHeight + basePosition.y)
+        round(position.x * baseWidth + basePosition.x, 0),
+        round(position.y * baseHeight + basePosition.y, 0)
       )
     )
   }
@@ -79,7 +80,7 @@ class Dimensions {
     )
   }
 
-  //* ==================== PUBLIC METHODS ==================== //
+  //  ==================== PUBLIC METHODS ==================== //
 
   /** Align object relative to canvas
    * @param positionX Relative position on x axis
