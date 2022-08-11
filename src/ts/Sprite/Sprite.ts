@@ -104,6 +104,15 @@ class Sprite {
     return this._currentState || this.states[0]
   }
 
+  /**
+   * Searches for state with given name
+   * @param name Name of state
+   * @returns State with given name
+   */
+  public getState(name: string): State | undefined {
+    return this.states.find((state) => state.name === name)
+  }
+
   /** Load all assets */
   public async loadAssets(): Promise<void> {
     await Promise.all(this.states.map((state) => state.image.loadAsset()))

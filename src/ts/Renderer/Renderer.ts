@@ -1,15 +1,9 @@
 import type { RenderData } from './interfaces'
 
-import {
-  GAME_SCREEN_RATIO,
-  ORIENTED_HEIGHT,
-  ORIENTED_WIDTH,
-} from '../constants'
-
 import RenderCollection from './RenderCollection'
 
-import Dimensions from '@/Dimensions/Dimensions'
-import Vector2D from '@/Dimensions/Vector'
+import { GAME_SCREEN_RATIO, ORIENTED_HEIGHT, ORIENTED_WIDTH } from '@/constants'
+import Dimensions, { Vector2D } from '@/Dimensions'
 import Sprite, { SpriteAnimation } from '@/Sprite'
 
 /** The core function of the Render class is the rendering of render objects. It
@@ -50,9 +44,6 @@ class Renderer {
   constructor(canvasElement: HTMLCanvasElement) {
     this.canvasElement = canvasElement
     this.context = canvasElement.getContext('2d')!
-
-    this.context.imageSmoothingEnabled = false
-    this.context.imageSmoothingQuality = 'high'
 
     this.renderCollection.isRelative = true
 

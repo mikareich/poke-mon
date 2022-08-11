@@ -16,3 +16,12 @@ export function round(value: number, precision: number = 2): number {
 export function roundUp(value: number): number {
   return Math.ceil(value)
 }
+
+/**
+ * Rounds number off
+ * @param value Number to round
+ * @returns Rounded number
+ */
+export function roundOff(value: number): number {
+  return Math.floor(value)
+}

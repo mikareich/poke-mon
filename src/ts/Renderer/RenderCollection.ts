@@ -1,9 +1,9 @@
 import type { Renderable, RenderData } from './interfaces'
-import type { Vector2D } from '@/Dimensions'
+import type Vector2D from '@/Dimensions/Vector'
 
 import { v4 as uuid } from 'uuid'
 
-import Dimensions from '@/Dimensions'
+import Dimensions from '@/Dimensions/Dimensions'
 
 /** Contains related render objects or render collections */
 class RenderCollection extends Dimensions {

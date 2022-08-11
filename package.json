@@ -9,7 +9,7 @@
     "build": "webpack --mode production",
     "format": "prettier --write \"**/*.{js,ts}\"",
     "type-check": "tsc --pretty --noEmit",
-    "lint": "eslint . --ext ts --ext js --fix",
+    "lint": "eslint . --ext ts --ext js",
     "pre-commit": "lint-staged",
     "prepare": "husky install"
   },
@@ -58,6 +58,7 @@
     "webpack-dev-server": "^4.9.3"
   },
   "dependencies": {
+    "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.7.1",
     "sass": "^1.53.0",
     "sass-loader": "^13.0.2",

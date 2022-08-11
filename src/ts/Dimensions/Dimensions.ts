@@ -1,6 +1,6 @@
+/* eslint-disable */
 import Vector2D from './Vector'
 
-import Renderer from '@/Renderer'
 import { round, roundUp } from '@/Utils/round'
 
 type RelativePositionX = 'left' | 'center' | 'right'
@@ -17,13 +17,13 @@ class Dimensions {
   //  ==================== PUBLIC PROPERTIES ==================== //
 
   /** Relative height on the canvas */
-  public height: number = Renderer.CONFIG.ORIENTED_HEIGHT
+  public height: number
 
   /** Relative position on the canvas */
   public position: Vector2D = new Vector2D(0, 0)
 
   /** Relative width on the canvas */
-  public width: number = Renderer.CONFIG.ORIENTED_WIDTH
+  public width: number
 
   //  ==================== CONSTRUCTORS ==================== //
 

@@ -13,6 +13,9 @@ class SpriteAnimation extends Sprite {
   /** Name of the animation */
   public readonly name: string
 
+  /** Index of the current state */
+  public stateIndex: number = 0
+
   /** How many times the state changes in one second */
   public ticks: number = FPS
 
@@ -20,9 +23,6 @@ class SpriteAnimation extends Sprite {
 
   /** Last time the state was changed */
   private lastUpdate: number = 0
-
-  /** Index of the current state */
-  private stateIndex = 0
 
   //  ==================== CONSTRUCTOR ==================== //
 

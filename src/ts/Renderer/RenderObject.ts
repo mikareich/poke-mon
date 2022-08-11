@@ -4,8 +4,7 @@ import type { SpriteAnimation } from '@/Sprite'
 
 import { v4 as uuid } from 'uuid'
 
-import Dimensions from '@/Dimensions/Dimensions'
-import Vector2D from '@/Dimensions/Vector'
+import Dimensions, { Vector2D } from '@/Dimensions'
 
 interface Background {
   color?: string
