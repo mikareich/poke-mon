@@ -1,5 +1,11 @@
+Modules:
+    ☐ Create Camera
+    ☐ Create Scenes
+    ☐ Create Input System
+    ☐ Create Physics Engine/ Collision Detector
+    ☐ Create UI
+
 Locations:
-    ✔ Add Forest @started(22-08-11 18:42) @done(22-08-11 19:32) @lasted(50m58s)
     ☐ Add Meadow
     ☐ Add Houses
 
@@ -12,6 +18,7 @@ Locations:
 ☐ Create game engine
 
 Archive:
+  ✔ Add Forest @started(22-08-11 18:42) @done(22-08-11 19:32) @lasted(50m58s) @project(Locations)
   ✔ Fix loading problem of sea @high @started(22-08-01 21:59) @done(22-08-01 22:50) @lasted(51m8s) @project(Locations)
   ✔ Add Sea @done(22-07-30 23:22) @project(Locations)
   ✔ Add Island @done(22-07-30 23:21) @project(Locations)

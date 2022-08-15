@@ -1,9 +1,16 @@
 import type { Renderable, RenderData } from './interfaces'
-import type Vector2D from '@/Dimensions/Vector'
+import type { Transform } from '@/interfaces'
 
 import { v4 as uuid } from 'uuid'
 
 import Dimensions from '@/Dimensions/Dimensions'
+import Vector2D from '@/Dimensions/Vector'
+import { round } from '@/Utils/round'
+
+export const defaultTransform: Transform = {
+  scale: 1,
+  shift: new Vector2D(0, 0),
+}
 
 /** Contains related render objects or render collections */
 class RenderCollection extends Dimensions {
@@ -64,23 +71,18 @@ class RenderCollection extends Dimensions {
   /** Returns all relevant render data based on base dimensions
    * @param targetDimension Based dimensions
    */
-  public toRenderData(
-    baseDimension?: Dimensions,
-    targetDimension?: Dimensions
-  ): RenderData[] {
-    let ratio = Dimensions.getRatio(this, this)
-
-    const _isRelativ = baseDimension && targetDimension && this.isRelative
-    if (_isRelativ) ratio = Dimensions.getRatio(this, baseDimension)
-
-    const absoluteDimensions = Dimensions.absoluteDimensions(
-      ratio,
-      _isRelativ ? targetDimension : this
+  public toRenderData(transfrom: Transform = defaultTransform): RenderData[] {
+    const scale = round(
+      this.isRelative ? transfrom.scale : defaultTransform.scale
+    )
+    const shift = Vector2D.shift(
+      this.isRelative ? transfrom.shift : defaultTransform.shift,
+      this.position
     )
 
     const renderData = this.collection
       .map((item): RenderData | RenderData[] =>
-        item.toRenderData(this, absoluteDimensions)
+        item.toRenderData({ scale, shift })
       )
       .flat()
 

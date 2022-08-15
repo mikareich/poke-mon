@@ -17,7 +17,6 @@ class Sea extends Location {
       Renderer.CONFIG.ORIENTED_HEIGHT,
       new Vector2D(0, 0)
     )
-    this.accessible = false
 
     // create background
     const waveCollection = new RenderCollection(
@@ -68,7 +67,7 @@ class Sea extends Location {
       // create animation
       const animation = new SpriteAnimation('waves', waves)
       animation.infinite = true
-      animation.ticks = 2
+      animation.ticks = 10
 
       // create sprite
       const sprite = new Sprite(waves)
@@ -93,7 +92,7 @@ class Sea extends Location {
       waveCollection.add(wave)
     }
 
-    this.setBackground(waveCollection)
+    this.addToBackground(waveCollection)
   }
 }
 

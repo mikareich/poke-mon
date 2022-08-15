@@ -2,6 +2,7 @@
 import Vector2D from './Vector'
 
 import { round, roundUp } from '@/Utils/round'
+import { Transform } from '@/interfaces'
 
 type RelativePositionX = 'left' | 'center' | 'right'
 type RelativePositionY = 'top' | 'center' | 'bottom'
@@ -35,48 +36,32 @@ class Dimensions {
   }
 
   //  ==================== PUBLIC STATIC METHODS ==================== //
-
-  /** Calculates absolut dimensions
-   * @param ratio Relative dimensions in another collection
-   * @param targetDimension Target dimensions of the collection
+  /**
+   * Transforms dimensions by a scale factor and a position
+   * @param dimensions Dimensions to scale
+   * @param transform Transform to apply
    */
-  public static absoluteDimensions(
-    ratio: Dimensions,
-    targetDimension: Dimensions
+  public static transform(
+    dimensions: Dimensions,
+    transform: Transform
   ): Dimensions {
-    const { width, height, position } = ratio
-    const {
-      width: baseWidth,
-      height: baseHeight,
-      position: basePosition,
-    } = targetDimension
+    const { width, height } = Dimensions.scale(dimensions, transform.scale)
 
     return new Dimensions(
-      roundUp(width * baseWidth),
-      roundUp(height * baseHeight),
-      new Vector2D(
-        round(position.x * baseWidth + basePosition.x, 0),
-        round(position.y * baseHeight + basePosition.y, 0)
-      )
+      width,
+      height,
+      Vector2D.transform(dimensions.position, transform)
     )
   }
 
-  /** Calculates ratio of dimensions
-   * @param dimensionsA First dimensions (as denominator)
-   * @param dimensionsB Second dimensions (as numerator)
-   * @returns Ratio of dimensions
-   */
-  public static getRatio(
-    dimensionsA: Dimensions,
-    dimensionsB: Dimensions
-  ): Dimensions {
-    const { width, height, position } = dimensionsA
-    const { width: baseWidth, height: baseHeight } = dimensionsB
+  /** Scales dimension by specific multiplier */
+  public static scale(dimensions: Dimensions, multiplier: number): Dimensions {
+    const { width, height } = dimensions
 
     return new Dimensions(
-      width / baseWidth,
-      height / baseHeight,
-      new Vector2D(position.x / baseWidth, position.y / baseHeight)
+      round(width * multiplier, 0),
+      round(height * multiplier, 0),
+      dimensions.position
     )
   }
 

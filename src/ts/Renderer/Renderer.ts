@@ -3,8 +3,9 @@ import type { RenderData } from './interfaces'
 import RenderCollection from './RenderCollection'
 
 import { GAME_SCREEN_RATIO, ORIENTED_HEIGHT, ORIENTED_WIDTH } from '@/constants'
-import Dimensions, { Vector2D } from '@/Dimensions'
+import { Vector2D } from '@/Dimensions'
 import Sprite, { SpriteAnimation } from '@/Sprite'
+import { round } from '@/Utils/round'
 
 /** The core function of the Render class is the rendering of render objects. It
 stores all render objects in a render collection. When a renderer is initiated,
@@ -64,16 +65,13 @@ class Renderer {
 
   /** Render data of collection */
   public get renderData(): RenderData[] {
-    const absoluteDimensions = new Dimensions(
-      this.width,
-      this.height,
-      new Vector2D(0, 0)
-    )
+    const scale = this.width / Renderer.CONFIG.ORIENTED_WIDTH
+
     // render all render data
-    const renderData = this.renderCollection.toRenderData(
-      this.renderCollection,
-      absoluteDimensions
-    )
+    const renderData = this.renderCollection.toRenderData({
+      scale,
+      shift: new Vector2D(0, 0),
+    })
 
     return renderData
   }
@@ -116,8 +114,8 @@ class Renderer {
   private static setDimensions(canvasElement: HTMLCanvasElement): void {
     const { CANVAS_RATIO } = Renderer.CONFIG
 
-    let width = window.innerWidth
-    let height = width * CANVAS_RATIO
+    let width = round(window.innerWidth, 0)
+    let height = round(width * CANVAS_RATIO, 0)
 
     if (height > window.innerHeight) {
       height = window.innerHeight

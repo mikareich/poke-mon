@@ -82,7 +82,7 @@ class Sprite {
 
     if (image !== undefined) {
       ctx.imageSmoothingEnabled = false
-      ctx.imageSmoothingQuality = 'high'
+
       ctx.drawImage(
         image,
         sx,

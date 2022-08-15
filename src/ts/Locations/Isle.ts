@@ -21,12 +21,12 @@ class Isle extends Location {
       sprite,
     })
     bg.isRelative = true
-    this.setBackground(bg)
+    this.addToBackground(bg)
 
     // add forest
-    const forest = new Forest(200, 200, new Vector2D(100, 50), 10)
+    const forest = new Forest(400, 200, new Vector2D(100, 50), 10)
 
-    this.setBackground(forest.background)
+    this.addToBackground(forest.background)
   }
 }
 

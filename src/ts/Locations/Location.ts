@@ -9,7 +9,7 @@ import { RenderCollection } from '@/Renderer'
 /** Represents location in game */
 class Location extends Dimensions {
   /** Indicates whether you can enter this location */
-  public accessible: boolean = true
+  /* public accessible: boolean = true */
 
   /** Id of location */
   public readonly id: string = uuid()
@@ -30,16 +30,11 @@ class Location extends Dimensions {
 
   /** Background of location */
   public get background(): RenderCollection {
-    const clone = Object.assign(
-      Object.create(Object.getPrototypeOf(this._background)),
-      this._background
-    )
-
-    return clone
+    return this._background
   }
 
   /** Set's background of location */
-  public async setBackground(...renderable: Renderable[]): Promise<void> {
+  public async addToBackground(...renderable: Renderable[]): Promise<void> {
     await this._background.add(...renderable)
   }
 }

@@ -1,8 +1,11 @@
 import type { RenderData } from './interfaces'
+import type { Transform } from '@/interfaces'
 import type Sprite from '@/Sprite'
 import type { SpriteAnimation } from '@/Sprite'
 
 import { v4 as uuid } from 'uuid'
+
+import { defaultTransform } from './RenderCollection'
 
 import Dimensions, { Vector2D } from '@/Dimensions'
 
@@ -91,31 +94,16 @@ class RenderObject extends Dimensions {
    * @param baseDimensions Based dimensions
    * @returns {RenderObject}
    */
-  public toRenderData(
-    baseDimensions?: Dimensions,
-    targetDimensions?: Dimensions
-  ): RenderData {
+  public toRenderData(transform: Transform = defaultTransform): RenderData {
     const renderData: RenderData = {
       background: {
         color: this.background.color,
         sprite: this.currentAnimation || this.background.sprite,
       },
-      height: this.height,
-      position: this.position,
-      width: this.width,
-    }
-
-    // update to oriented dimensions
-    if (this.isRelative && baseDimensions && targetDimensions) {
-      const relativeDimensions = Dimensions.getRatio(this, baseDimensions)
-      const { width, height, position } = Dimensions.absoluteDimensions(
-        relativeDimensions,
-        targetDimensions
-      )
-
-      renderData.width = width
-      renderData.height = height
-      renderData.position = position
+      ...Dimensions.transform(
+        this,
+        this.isRelative ? transform : defaultTransform
+      ),
     }
 
     return renderData
