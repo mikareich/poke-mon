@@ -1,6 +1,6 @@
 import type { State } from './interfaces'
 import type Asset from '@/Asset'
-import type { RenderData } from '@/Renderer/interfaces'
+import type { RenderData } from '@/interfaces'
 
 import { v4 as uuid } from 'uuid'
 

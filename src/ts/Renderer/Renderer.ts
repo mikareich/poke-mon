@@ -1,8 +1,15 @@
-import type { RenderData } from './interfaces'
+import type Camera from './Camera'
+import type Renderable from './Renderable'
+import type { RenderData } from '@/interfaces'
 
 import RenderCollection from './RenderCollection'
 
-import { GAME_SCREEN_RATIO, ORIENTED_HEIGHT, ORIENTED_WIDTH } from '@/constants'
+import {
+  DEFAULT_TRANSFORM,
+  GAME_SCREEN_RATIO,
+  ORIENTED_HEIGHT,
+  ORIENTED_WIDTH,
+} from '@/constants'
 import { Vector2D } from '@/Dimensions'
 import Sprite, { SpriteAnimation } from '@/Sprite'
 import { round } from '@/Utils/round'
@@ -18,6 +25,8 @@ class Renderer {
   public static CONFIG = {
     /** Aspect ratio of canvas */
     CANVAS_RATIO: GAME_SCREEN_RATIO,
+    /** Default transform to use */
+    DEFAULT_TRANSFORM,
     /** Simulated height of the canvas */
     ORIENTED_HEIGHT,
     /** Simulated width of the canvas */
@@ -25,6 +34,8 @@ class Renderer {
   }
 
   //  ==================== PUBLIC PROPERTIES  ==================== //
+  /** Camera */
+  public readonly camera: Camera
 
   /** Game Canvas */
   public readonly canvasElement: HTMLCanvasElement
@@ -42,11 +53,15 @@ class Renderer {
   //  ==================== CONSTRUCTORS ==================== //
 
   /** Initiates new renderer */
-  constructor(canvasElement: HTMLCanvasElement) {
+  constructor(canvasElement: HTMLCanvasElement, camera: Camera) {
     this.canvasElement = canvasElement
     this.context = canvasElement.getContext('2d')!
 
     this.renderCollection.isRelative = true
+    this.renderCollection.identifier = 'renderer'
+
+    this.camera = camera
+    camera.setRenderer(this)
 
     // set dimensions of canvas on resize
     Renderer.setDimensions(canvasElement)
@@ -65,13 +80,10 @@ class Renderer {
 
   /** Render data of collection */
   public get renderData(): RenderData[] {
-    const scale = this.width / Renderer.CONFIG.ORIENTED_WIDTH
-
     // render all render data
-    const renderData = this.renderCollection.toRenderData({
-      scale,
-      shift: new Vector2D(0, 0),
-    })
+    const renderData = this.renderCollection.toRenderData(
+      this.camera.createTransform()
+    )
 
     return renderData
   }
@@ -82,6 +94,25 @@ class Renderer {
   }
 
   //  ==================== PUBLIC STATIC METHODS ==================== //
+  /** Generate render stack for renderable
+   * @param renderable Renderable to generate render stack for
+   */
+  public static generateStack(renderable: Renderable): RenderCollection[] {
+    const stack: RenderCollection[] = []
+
+    const nextInstance = (child: Renderable): void => {
+      const collection = child.parentCollection
+
+      if (collection) {
+        stack.unshift(collection)
+        nextInstance(collection)
+      }
+    }
+
+    nextInstance(renderable)
+
+    return stack
+  }
 
   /** Renders render object on canvas
    * @param renderData Render data

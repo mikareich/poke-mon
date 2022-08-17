@@ -17,6 +17,7 @@ class Sea extends Location {
       Renderer.CONFIG.ORIENTED_HEIGHT,
       new Vector2D(0, 0)
     )
+    this.background.identifier = 'sea'
 
     // create background
     const waveCollection = new RenderCollection(
@@ -24,7 +25,6 @@ class Sea extends Location {
       Renderer.CONFIG.ORIENTED_HEIGHT,
       new Vector2D(0, 0)
     )
-    waveCollection.isRelative = true
 
     const waveBackground = new RenderObject(
       waveCollection.width,

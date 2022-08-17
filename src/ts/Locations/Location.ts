@@ -1,5 +1,5 @@
 import type Vector2D from '@/Dimensions/Vector'
-import type { Renderable } from '@/Renderer/interfaces'
+import type Renderable from '@/Renderer/Renderable'
 
 import { v4 as uuid } from 'uuid'
 

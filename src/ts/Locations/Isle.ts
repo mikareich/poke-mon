@@ -14,7 +14,10 @@ class Isle extends Location {
   constructor() {
     const width = Isle.CONFIG.WIDTH
     const height = Isle.CONFIG.HEIGHT
+
     super(width, height, new Vector2D(0, 0))
+    this.background.isRelative = true
+    this.background.identifier = 'isle'
 
     const sprite = new SingleSprite('/images/isle.png', 360, 240)
     const bg = new RenderObject(width, height, new Vector2D(0, 0), {
@@ -24,7 +27,8 @@ class Isle extends Location {
     this.addToBackground(bg)
 
     // add forest
-    const forest = new Forest(400, 200, new Vector2D(100, 50), 10)
+    const forest = new Forest(400, 200, new Vector2D(100, 50), 40)
+    forest.background.identifier = 'forest'
 
     this.addToBackground(forest.background)
   }

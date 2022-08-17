@@ -1,26 +1,12 @@
-import type { Renderable, RenderData } from './interfaces'
-import type { Transform } from '@/interfaces'
+import type { Transform, RenderData } from '@/interfaces'
 
-import { v4 as uuid } from 'uuid'
+import Renderable from './Renderable'
 
-import Dimensions from '@/Dimensions/Dimensions'
 import Vector2D from '@/Dimensions/Vector'
-import { round } from '@/Utils/round'
-
-export const defaultTransform: Transform = {
-  scale: 1,
-  shift: new Vector2D(0, 0),
-}
 
 /** Contains related render objects or render collections */
-class RenderCollection extends Dimensions {
-  // ==================== PUBLIC PROPERTIES ==================== //
-
-  /** ID of the collection */
-  public readonly id = uuid()
-
-  /** Indicates whether width, height and position are relativ calculated */
-  public isRelative: boolean = false
+class RenderCollection extends Renderable {
+  // ==================== PRIVATE PROPERTIES ==================== //
 
   /** Collection */
   private _collection: Renderable[] = []
@@ -49,8 +35,21 @@ class RenderCollection extends Dimensions {
    */
   public async add(...items: Renderable[]): Promise<void> {
     this._collection.push(...items)
+    items.forEach((item) => item.setParentCollection(this))
 
     await Promise.all(items.map((item) => item.loadAssets()))
+  }
+
+  /** Finds renderable by id */
+  public findById(id: string): Renderable | undefined {
+    return this._collection.find((item) => item.id === id)
+  }
+
+  /** Finds renderable by indentifier */
+  public findByIdentifier(identifier: string): Renderable | undefined {
+    return this.flattenCollection().find(
+      (item) => item.identifier === identifier
+    )
   }
 
   /** Loads all assets of containing items */
@@ -68,25 +67,49 @@ class RenderCollection extends Dimensions {
     if (index !== -1) this._collection.splice(index, 1)
   }
 
-  /** Returns all relevant render data based on base dimensions
-   * @param targetDimension Based dimensions
+  /** Returns all relevant render data of collection
+   * @param transfrom Transform to use
+   * @returns {RenderData[]} Render data
    */
-  public toRenderData(transfrom: Transform = defaultTransform): RenderData[] {
-    const scale = round(
-      this.isRelative ? transfrom.scale : defaultTransform.scale
-    )
-    const shift = Vector2D.shift(
-      this.isRelative ? transfrom.shift : defaultTransform.shift,
-      this.position
-    )
-
+  public toRenderData(
+    transfrom: Transform = Renderable.CONFIG.DEFAULT_TRANSFORM
+  ): RenderData[] {
     const renderData = this.collection
       .map((item): RenderData | RenderData[] =>
-        item.toRenderData({ scale, shift })
+        item.toRenderData(this.updateTransform(transfrom))
       )
       .flat()
 
     return renderData
+  }
+
+  /** Shifts transform based on position */
+  public updateTransform(transform: Transform): Transform {
+    let { shift, scale } = Renderable.CONFIG.DEFAULT_TRANSFORM
+    shift = Vector2D.shift(
+      Renderable.CONFIG.DEFAULT_TRANSFORM.shift,
+      this.position
+    )
+
+    if (this.isRelative) {
+      scale = transform.scale
+      shift = Vector2D.shift(transform.shift, this.position)
+    }
+
+    return { scale, shift }
+  }
+
+  //  ==================== PRIVATE METHODS ==================== //
+
+  /** Flattens all renderable in collection (with collections) */
+  private flattenCollection(): Renderable[] {
+    return this._collection.reduce((collection, item) => {
+      if (item instanceof RenderCollection) {
+        return [...collection, item, ...item.flattenCollection()]
+      }
+
+      return [...collection, item]
+    }, [] as Renderable[])
   }
 }
 

@@ -1,22 +1,21 @@
-import type { RenderData } from './interfaces'
-import type { Transform } from '@/interfaces'
+import type { Vector2D } from '@/Dimensions'
+import type { RenderData, Transform } from '@/interfaces'
 import type Sprite from '@/Sprite'
 import type { SpriteAnimation } from '@/Sprite'
 
-import { v4 as uuid } from 'uuid'
+import Renderable from './Renderable'
 
-import { defaultTransform } from './RenderCollection'
-
-import Dimensions, { Vector2D } from '@/Dimensions'
+import Dimensions from '@/Dimensions'
 
 interface Background {
   color?: string
   sprite?: Sprite
 }
 
-class RenderObject extends Dimensions {
+class RenderObject extends Renderable {
   //  ==================== PUBLIC STATIC PROPERTIES ==================== //
-  public static CONFIG = {
+  public static readonly CONFIG = {
+    ...Renderable.CONFIG,
     /** Default background color */
     DEFAULT_BACKGROUND_COLOR: 'red',
   }
@@ -34,24 +33,6 @@ class RenderObject extends Dimensions {
   /** Current animation */
   public currentAnimation: SpriteAnimation | undefined
 
-  /** ID of render object */
-  public readonly id = uuid()
-
-  /** Identifier of the object */
-  public readonly identifier: string | undefined
-
-  /** Indicates whether width, height and position are relativ calculated */
-  public isRelative: boolean = false
-
-  /** Keeps aspect ratio when scaling */
-  public keepAspectRatio: boolean = true
-
-  /** Position  on canvas */
-  public position: Vector2D = new Vector2D(0, 0)
-
-  /** Render priority */
-  public renderPriority: number = 0
-
   //  ==================== CONSTRUCTOR ==================== //
 
   /** Represents game object on game screen */
@@ -59,14 +40,11 @@ class RenderObject extends Dimensions {
     width: number,
     height: number,
     position: Vector2D,
-    background?: Background,
-    identifier?: string
+    background?: Background
   ) {
     super(width, height, position)
-    this.position = position // idk irgendwie wird die sonst auf 0,0 gesetzt
 
     if (background) this.background = background
-    if (identifier) this.identifier = identifier
   }
 
   //  ==================== PUBLIC METHODS ==================== //
@@ -90,20 +68,19 @@ class RenderObject extends Dimensions {
     this.currentAnimation = undefined
   }
 
-  /** Returns all relevant render data based on base dimensions
-   * @param baseDimensions Based dimensions
-   * @returns {RenderObject}
+  /** Returns all relevant render data
+   * @param transform Transform to use
+   * @returns {RenderData} Render data
    */
-  public toRenderData(transform: Transform = defaultTransform): RenderData {
+  public toRenderData(
+    transform: Transform = Renderable.CONFIG.DEFAULT_TRANSFORM
+  ): RenderData {
     const renderData: RenderData = {
       background: {
         color: this.background.color,
         sprite: this.currentAnimation || this.background.sprite,
       },
-      ...Dimensions.transform(
-        this,
-        this.isRelative ? transform : defaultTransform
-      ),
+      ...Dimensions.transform(this, transform),
     }
 
     return renderData
